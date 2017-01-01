@@ -1,0 +1,2 @@
+* Migrate to koa 2.0
+- setup babel + nodejs 
