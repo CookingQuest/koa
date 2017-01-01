@@ -4,13 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon lib/index.js --watch lib --exec babel-node",
+    "build": "babel lib -d dist",
+    "serve": "node dist/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "koa-router": "^5.4.0",
-    "koa": "^1.2.4", 
     "marko": "^3.13.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-stage-2": "^6.18.0",
+    "koa": "^2.0.0-alpha.7",
+    "koa-router": "^7.0.1",
+    "nodemon": "^1.11.0"
   }
 }
