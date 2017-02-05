@@ -1,0 +1,8 @@
+{
+  "verbose": true,
+  "ext" : "ts",
+  "watch": [
+    "lib"
+  ],
+  "exec": "tsc"
+}
