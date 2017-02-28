@@ -1,4 +1,4 @@
-import { Context } from 'koa';
+import { Context, Middleware } from 'koa';
 import * as httpProxy from 'http-proxy';
 
 export class ProxyMiddleware {
@@ -6,11 +6,11 @@ export class ProxyMiddleware {
     {target: {host: 'localhost', port: 4000}}
   );
 
-  public use(ctx: Context, next: () => Promise<any>): any {
-    if(ctx.path.startsWith('socket/')){
-      this.proxy.web(ctx.req, ctx.res);
-    } else {
-      next()
+  public use(): Middleware {
+    return async (ctx: Context, next: () => Promise<any>) => {
+      if(ctx.path.startsWith('socket/')){
+        this.proxy.web(ctx.req, ctx.res);
+      } else await next();
     }
   };
 

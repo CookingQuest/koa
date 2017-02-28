@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "es2017",
     "module": "commonjs",
     "noEmitOnError": true,
-    "noEmitHelpers": true,
     "noImplicitAny": true,
     "experimentalDecorators": true,
     "moduleResolution": "node",
@@ -12,12 +11,15 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "noUnusedLocals": true,
+    "allowJs": true,
     "lib": [
-      "es2017"
+      "es2017",
+      "dom"
     ]
   },
   "include": [
-    "lib"
+    "lib",
+    "test"
   ],
   "exclude": [
     "node_modules"

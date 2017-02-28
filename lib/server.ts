@@ -1,25 +1,20 @@
 import * as Koa from 'koa';
-import { ApiMiddleware } from './apiMiddleware';
-import { RenderMiddleware } from './renderMiddleware';
+import * as http from 'http';
 
 export class Server {
-  private api = new ApiMiddleware();
   protected server = new Koa();
 
-  constructor(private render: RenderMiddleware) {
+  constructor() {
     this.server.keys = ['soehnke standheims'];
   }
 
-  protected init(): void {
-    this.server.use(this.api.use);
-    this.server.use(this.render.use);
+  public use(middlewares: Koa.Middleware[]) {
+    middlewares.forEach(m => this.server.use(m));
+    return this;
   }
 
-  public start(): void {
-    const port = 3000;
-    this.api.init().then(() => {
-      this.server.listen(port);
-      console.log(`listening on port ${port}`);
-    });
+  public start(port: number = 3000): http.Server {
+    console.info(`listening on port ${port}`);
+    return this.server.listen(port);
   }
 }

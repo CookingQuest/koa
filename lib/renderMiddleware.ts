@@ -1,11 +1,10 @@
-import { Context } from 'koa';
+import { Context, Middleware } from 'koa';
+import * as Marko from 'marko';
 
-export class RenderMiddleware {
-
-  constructor(protected template: any) {}
-
-  use(ctx: Context, _next: () => Promise<any>): any {
+export const RenderMiddleware = (templatePath: string): Middleware => {
+  const template = Marko.load(templatePath);
+  return async (ctx: Context): Promise<any> => {
     ctx.type = 'text/html';
-    ctx.body = this.template.stream({initialState: ctx.state.initialState});
+    ctx.body = template.stream({initialState: JSON.stringify(ctx.state.initialState)});
   };
 }

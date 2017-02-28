@@ -1,8 +1,12 @@
-import Marko from 'marko';
-
 import { Server } from './server';
 import { RenderMiddleware } from './renderMiddleware';
+import { ApiMiddleware } from './apiMiddleware';
 
-const template = Marko.load(require.resolve('../templates/index.html'));
-const renderMiddleware = new RenderMiddleware(template);
-new Server(renderMiddleware).start();
+createServer().then((server) => server.start());
+
+async function createServer() {
+  const api = await ApiMiddleware();
+  return new Server().use([
+    api, RenderMiddleware('../templates/index.marko')
+  ]);
+}

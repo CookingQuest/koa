@@ -1,26 +1,20 @@
-import { Context } from 'koa';
-import Marko from 'marko';
-import * as path from 'path';
+import { Context, Middleware } from 'koa';
+import * as Marko from 'marko';
+import * as webpack from 'webpack';
 
-import { RenderMiddleware } from './renderMiddleware';
-
-export class DevRenderMiddleware extends RenderMiddleware {
-  private readonly indexPath: string;
-
-  constructor(private compiler: any) {
-    super(path.join(__dirname, 'tmp/tmpl.marko'));
-    this.indexPath = path.join(compiler.outputPath, 'index.html');
-  }
-
-  public use(ctx: Context, _next: () => Promise<any>): any {
+export const DevRenderMiddleware = (compiler: webpack.Compiler): Middleware => {
+  const errorFile = 'server/tmp/tmpl.marko';
+  return async (ctx: Context): Promise<any> => {
     ctx.type = 'text/html';
-    this.readIndexFile(file => {
-      const template = Marko.load(this.template, file.toString(), {writeToDisk: false});
-      ctx.body = template.stream({initialState: ctx.state.initialState});
-    });
+    const file = await readIndexFile(compiler, 'index.html');
+    const template = Marko.load(errorFile, file.toString(), {writeToDisk: false});
+    ctx.body = template.stream({initialState: JSON.stringify(ctx.state.initialState)});
   };
+}
 
-  private readIndexFile(cb: (file: any) => any) {
-    this.compiler.outputFileSystem.readFile(path, (_: any, file: any) => cb(file));
-  }
+async function readIndexFile(compiler: webpack.Compiler, path: string): Promise<any> {
+  return new Promise(
+    (resolve) => compiler.outputFileSystem
+      .readFile(path, (_: any, file: any) => resolve(file))
+  );
 }

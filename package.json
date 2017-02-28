@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc -w",
-    "dev": "nodemon dist/index.js"
+    "dev": "run-p start nodemon",
+    "test": "tsc && ava dist/test/*.js",
+    "test:watch": "nodemon --watch lib --watch test --exec npm run test --ignore *.marko.js -e ts",
+    "nodemon": "nodemon --watch dist --inspect=9222 dist/index.js",
     "build": "tsc",
     "serve": "node dist/index.js"
   },
@@ -18,9 +21,14 @@
   "devDependencies": {
     "@types/koa": "^2.0.37",
     "@types/node": "^7.0.5",
+    "@types/supertest": "^2.0.0",
     "@types/webpack": "^2.2.4",
+    "ava": "^0.18.2",
+    "get-port": "^2.1.0",
     "http-proxy": "^1.16.2",
     "nodemon": "^1.11.0",
+    "npm-run-all": "^4.0.2",
+    "supertest": "^3.0.0",
     "ts-node": "^2.0.0",
     "tslib": "^1.5.0",
     "typescript": "^2.2.0-dev.20170204"
