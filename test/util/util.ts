@@ -28,5 +28,7 @@ export const testObjectString: string = JSON.stringify(testObject);
 export const mockCompiler = <webpack.Compiler> {
   outputFileSystem: {
     readFile: (_path: string, cb: Function) => cb(undefined, '<div>${data.initialState}</div>')
-  }
+  },
+  plugin: (a: string, b: any): void => {},
+  watch: (a: any, b: any): void => {}
 };

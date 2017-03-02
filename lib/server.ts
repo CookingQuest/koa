@@ -2,7 +2,7 @@ import * as Koa from 'koa';
 import * as http from 'http';
 
 export class Server {
-  protected server = new Koa();
+  public server = new Koa();
 
   constructor() {
     this.server.keys = ['soehnke standheims'];

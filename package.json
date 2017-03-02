@@ -26,6 +26,7 @@
     "ava": "^0.18.2",
     "get-port": "^2.1.0",
     "http-proxy": "^1.16.2",
+    "koa-webpack": "^0.3.1",
     "nodemon": "^1.11.0",
     "npm-run-all": "^4.0.2",
     "supertest": "^3.0.0",

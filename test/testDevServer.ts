@@ -1,9 +1,10 @@
 import * as request from 'supertest';
-import { Context, Middleware } from 'koa';
 import test from 'ava';
+import * as webpack from 'webpack';
+import * as getPort from 'get-port';
 
 import { DevRenderMiddleware } from '../lib/devRenderMiddleware';
-import { DevServer } from '../lib/devServer';
+import { start } from '../lib/devServer';
 import { createServer, mockCompiler, mockBackend,
          testObjectString, stateSetter } from './util/util';
 
@@ -16,9 +17,17 @@ test('devRender should work', async (t) => {
 });
 
 test('devServer should work', async (t) => {
-  const noop: Middleware = async (_ctx: Context, next: () => Promise<any>) => await next();
-  const server = (await new DevServer(noop).connect(mockCompiler, mockBackend)).start();
+  const server = await start(serverOpts, mockBackend, await getPort());
   t.context.server = server;
   const response = await request(server).get('');
-  t.is(response.text, `<div>${testObjectString}</div>`);
+  t.is(response.status, 200);
 });
+
+const serverOpts = {compiler: webpack({
+    context: `${__dirname}/util`,
+    entry: './index',
+    output: {
+      path: `${__dirname}/dist`,
+        filename: 'index.html'
+    }
+}), config: {output: 'test/dist'}, dev: {publicPath: `${__dirname}/dist`}};

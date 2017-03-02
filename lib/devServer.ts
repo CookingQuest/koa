@@ -1,5 +1,5 @@
-import { Middleware } from 'koa'
 import * as webpack from 'webpack';
+import * as webpackMiddleware from 'koa-webpack';
 
 import { ProxyMiddleware } from './proxyMiddleware';
 import { DevRenderMiddleware } from './devRenderMiddleware';
@@ -7,21 +7,20 @@ import { Server } from './server';
 import { Backend } from './backend';
 import { ApiMiddleware } from './apiMiddleware';
 
-export class DevServer extends Server {
+export const start = async (opts: DevServerOpts, apiBackend?: Backend, port?: number) => {
+  const proxy = new ProxyMiddleware();
+  const api = await ApiMiddleware(apiBackend);
+  const server = new Server().use([
+    proxy.use(),
+    webpackMiddleware(opts),
+    api, DevRenderMiddleware(opts.compiler)
+  ]);
+  server.server.on('upgrade', proxy.upgradeWebsocket);
+  return await server.start(port);
+}
 
-  constructor(webpackMiddleware: Middleware) {
-    super();
-    const proxy = new ProxyMiddleware();
-    this.use([
-      proxy.use(),
-      webpackMiddleware
-    ]);
-    this.server.on('upgrade', proxy.upgradeWebsocket);
-  }
-
-  async connect(compiler: webpack.Compiler, apiBackend?: Backend) {
-    const api = await ApiMiddleware(apiBackend);
-    this.use([api, DevRenderMiddleware(compiler)]);
-    return this;
-  }
+interface DevServerOpts {
+  compiler: webpack.Compiler;
+  config: Object;
+  dev: Object;
 }
