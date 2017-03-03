@@ -2,6 +2,7 @@ import { ContextualTestContext } from 'ava';
 import { Context, Middleware } from 'koa';
 import * as getPort from 'get-port';
 import * as webpack from 'webpack';
+import * as Path from 'path';
 
 import { Server } from '../../lib/server';
 import { Backend } from '../../lib/backend';
@@ -32,3 +33,10 @@ export const mockCompiler = <webpack.Compiler> {
   plugin: (a: string, b: any): void => {},
   watch: (a: any, b: any): void => {}
 };
+
+export const config = {
+  context: Path.resolve(__dirname),
+  entry: './entry',
+  output: { path: Path.resolve(__dirname), filename: 'entry.js', publicPath: '/' }
+};
+
