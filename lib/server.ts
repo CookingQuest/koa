@@ -13,8 +13,12 @@ export class Server {
     return this;
   }
 
-  public start(port: number = 3000): http.Server {
+  public async start(port: number = 3000): Promise<http.Server> {
     console.info(`listening on port ${port}`);
-    return this.server.listen(port);
+    return await new Promise<http.Server>(resolve => {
+      let server = this.server.listen(port, () => {
+        resolve(server);
+      })
+    });
   }
 }
