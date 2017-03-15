@@ -9,8 +9,8 @@ export const ApiMiddleware = async (backend: Backend = new PhoenixBackend()): Pr
   });
 
   return async (ctx: Context, next: () => Promise<any>): Promise<any> => {
-    // let user = ctx.cookies.get('user', { signed: true });
-    const initialState = await backend.getInitialState(ctx.request.url, 'user')
+    let user = ctx.cookies.get('user', { signed: true });
+    const initialState = await backend.getInitialState(ctx.request.url, user)
     ctx.state.initialState = initialState;
     await next();
   }

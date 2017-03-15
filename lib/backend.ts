@@ -8,7 +8,7 @@ export class PhoenixBackend implements Backend {
 
   async connect(): Promise<object> {
     this.socket.connect();
-    this.channel = this.socket.channel('graphql', {});
+    this.channel = this.socket.channel('api', {});
     return new Promise((resolve, reject) => this.channel.join(1000)
                        .receive('ok', resolve)
                        .receive('timeout', reject));
@@ -16,7 +16,7 @@ export class PhoenixBackend implements Backend {
 
   async getInitialState(route: string, userHash: string): Promise<object> {
     return new Promise(
-      resolve => this.channel.push('initial_state', {route, userHash}, 5000)
+      resolve => this.channel.push('call', {method: 'initial_state', params: [{route, userHash}]}, 5000)
         .receive('ok', ({data}) => resolve(data))
     );
   }
