@@ -4,21 +4,28 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon lib/index.js --watch lib --exec babel-node",
-    "build": "babel lib -d dist",
+    "start": "nodemon --watch lib --inspect=9222 --exec ts-node lib/index.ts",
+    "test": "tsc && ava dist/test/*.js",
+    "test:watch": "nodemon --watch lib --watch test --exec npm run test --ignore *.marko.js -e ts",
+    "build": "tsc",
     "serve": "node dist/index.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Jan Moeller",
   "dependencies": {
-    "koa": "^2.0.0-alpha.7", 
-    "marko": "^3.13.1", 
+    "koa": "^2.0.0-alpha.7",
+    "marko": "^3.13.1",
     "websocket": "^1.0.24"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-stage-2": "^6.18.0",
-    "nodemon": "^1.11.0"
+    "@types/koa": "^2.0.37",
+    "@types/node": "^7.0.5",
+    "@types/supertest": "^2.0.0",
+    "ava": "^0.18.2",
+    "get-port": "^2.1.0",
+    "nodemon": "^1.11.0",
+    "supertest": "^3.0.0",
+    "ts-node": "^2.0.0",
+    "tslib": "^1.5.0",
+    "typescript": "^2.2.0-dev.20170204"
   }
 }
