@@ -5,6 +5,8 @@ export const RenderMiddleware = (templatePath: string): Middleware => {
   const template = Marko.load(templatePath);
   return async (ctx: Context): Promise<any> => {
     ctx.type = 'text/html';
-    ctx.body = template.stream({initialState: JSON.stringify(ctx.state.initialState)});
+    ctx.body = template.stream({
+      initialState: JSON.stringify(ctx.state.initialState),
+      bgImg: '/assets/img/bg.jpg'});
   };
 }
