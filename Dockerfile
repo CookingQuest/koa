@@ -6,4 +6,4 @@ RUN unzip repo.zip
 WORKDIR /repo/koa-master  
 RUN yarn && yarn run build
 RUN mv /repo/koa-master/dist /dist && rm -rf /repo
-CMD ["node", "/dist/index.js"]
+CMD ["NODE_ENV=prod", "node", "/dist/index.js"]

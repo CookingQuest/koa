@@ -4,13 +4,23 @@ import { Socket, Channel } from '../lib/phoenix';
 export class PhoenixBackend implements Backend {
   channel: Channel;
 
-  async connect(): Promise<object> {
-    const socket = new Socket('ws://localhost:4000/socket', { transport: ws });
-    socket.connect();
+  async connect(): Promise<void> {
+    const url = process.env.NODE_ENV === 'prod' ? 'phoenix' : 'localhost:4000';
+    const socket = new Socket(`ws://${url}/socket`, { transport: ws });
+    return new Promise<void>((resolve) => {
+      socket.onOpen(() => {
+        this.openChannels(socket, resolve);
+        console.log('api connected');
+        socket.onOpen(() => console.log('api connected'));
+      });
+      socket.onError(() => console.log('api offline'))
+      socket.connect();
+    });
+  }
+
+  openChannels(socket: Socket, resolve: () => void): void {
     this.channel = socket.channel('state', {});
-    return new Promise((resolve, reject) => this.channel.join(1000)
-      .receive('ok', resolve)
-      .receive('timeout', reject));
+    this.channel.join(1000).receive('ok', resolve);
   }
 
   async getInitialState(route: string, userHash: string): Promise<object> {
@@ -26,7 +36,7 @@ export class PhoenixBackend implements Backend {
 }
 
 export interface Backend {
-  connect(): Promise<object>;
+  connect(): Promise<void>;
   getInitialState(route: string, userHash: string): Promise<object>;
   register(token: string): Promise<boolean>;
 }
