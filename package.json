@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --watch lib --inspect=9222 --exec ts-node lib/index.ts",
+    "start": "npm run mvTmpl && nodemon --watch lib --inspect=9222 --exec ts-node lib/index.ts",
     "test": "tsc && ava dist/test/*.js",
     "test:watch": "nodemon --watch lib --watch test --exec npm run test --ignore *.marko.js -e ts",
     "build": "tsc",
-    "serve": "node dist/index.js"
+    "serve": "node dist/index.js",
+    "mvTmpl": "node scripts/mvTmpl.js "
   },
   "author": "Jan Moeller",
   "dependencies": {
@@ -22,6 +23,7 @@
     "@types/node": "^7.0.5",
     "@types/supertest": "^2.0.0",
     "ava": "^0.18.2",
+    "fs-extra": "^2.1.2",
     "get-port": "^2.1.0",
     "nodemon": "^1.11.0",
     "supertest": "^3.0.0",
