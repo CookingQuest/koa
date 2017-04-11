@@ -19,7 +19,7 @@ export async function createServer(t: ContextualTestContext, ...middlewares: Mid
 }
 
 export const mockBackend: Backend = {
-  connect: () => Promise.resolve({}),
+  connect: () => Promise.resolve(),
   getInitialState: (route: string, userHash: string) => Promise.resolve(testObject),
   register: (token) => Promise.resolve(token === 'validToken' ? true : false)
 }
