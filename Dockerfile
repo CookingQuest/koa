@@ -5,4 +5,5 @@ WORKDIR /repo
 RUN unzip repo.zip && rm -f repo.zip
 WORKDIR /repo/koa-master
 RUN yarn && yarn run build
+EXPOSE 3001
 CMD ["NODE_ENV=prod", "node", "dist/index.js"]
