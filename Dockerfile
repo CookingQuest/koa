@@ -7,4 +7,4 @@ WORKDIR /repo/koa-master
 ENV NODE_ENV=prod
 RUN yarn && yarn run build
 EXPOSE 3001
-CMD ["NODE_ENV=prod", "node", "dist/lib/index.js"]
+CMD ["node", "dist/lib/index.js"]
