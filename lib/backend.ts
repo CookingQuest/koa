@@ -5,7 +5,7 @@ export class PhoenixBackend implements Backend {
   channel: Channel;
 
   async connect(): Promise<void> {
-    const url = process.env.NODE_ENV === 'prod' ? 'wss://phoenix' : 'ws://localhost:4000';
+    const url = process.env.NODE_ENV === 'prod' ? 'ws://phoenix' : 'ws://localhost:4000';
     const socket = new Socket(`${url}/socket`, { transport: ws });
     return new Promise<void>((resolve) => {
       socket.onOpen(() => {
@@ -13,7 +13,7 @@ export class PhoenixBackend implements Backend {
         console.log('api connected');
         socket.onOpen(() => console.log('api connected'));
       });
-      socket.onError((err: object) => console.log(`api @${url} offline: ${JSON.stringify(err)}`))
+      socket.onError((err: object, hm: any) => console.log(`api @${url} offline: ${hm}`))
       socket.connect();
     });
   }
