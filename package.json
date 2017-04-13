@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "author": "Jan Möller",
   "license": "MIT",
-  "main": "dist/index.js",
   "scripts": {
     "start": "npm run mvTmpl && nodemon --watch lib --inspect=9222 --exec ts-node lib/index.ts",
     "test": "tsc && ava dist/test/*.js",
