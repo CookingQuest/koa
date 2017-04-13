@@ -13,7 +13,7 @@ export class PhoenixBackend implements Backend {
         console.log('api connected');
         socket.onOpen(() => console.log('api connected'));
       });
-      socket.onError((err: any) => console.log(`api @${url} offline: ${err}`))
+      socket.onError((err: object) => console.log(`api @${url} offline: ${JSON.stringify(err)}`))
       socket.connect();
     });
   }
