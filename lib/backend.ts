@@ -5,17 +5,9 @@ export class PhoenixBackend implements Backend {
   channel: Channel;
 
   async connect(): Promise<void> {
-    const url = process.env.NODE_ENV === 'prod' ? 'wss://cookingquests.com' : 'ws://localhost:4000';
-    const socket = new Socket(`${url}/socket`, { transport: ws });
-    return new Promise<void>((resolve) => {
-      socket.onOpen(() => {
-        this.openChannels(socket, resolve);
-        console.log('api connected');
-        socket.onOpen(() => console.log('api connected'));
-      });
-      socket.onError(() => console.log('api offline'))
-      socket.connect();
-    });
+    // const url = process.env.NODE_ENV === 'prod' ? 'wss://cookingquests.com' : 'ws://localhost:4000';
+    // const socket = new Socket(`${url}/socket`, { transport: ws });
+    return Promise.resolve();
   }
 
   openChannels(socket: Socket, resolve: () => void): void {
@@ -24,9 +16,7 @@ export class PhoenixBackend implements Backend {
   }
 
   async getInitialState(route: string, userHash: string): Promise<object> {
-    return new Promise(resolve => this.channel.push(
-      'get', { route, user_hash: userHash }, 5000
-    ).receive('ok', ({ data }) => resolve(data)));
+    return Promise.resolve({});
   }
 
   async register(token: string): Promise<boolean> {
