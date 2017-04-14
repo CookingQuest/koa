@@ -1,4 +1,4 @@
-import { w3cwebsocket as ws } from 'websocket';
+// import { w3cwebsocket as ws } from 'websocket';
 import { Socket, Channel } from '../lib/phoenix';
 
 export class PhoenixBackend implements Backend {
